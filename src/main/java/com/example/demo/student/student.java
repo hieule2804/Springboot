@@ -3,6 +3,7 @@ package com.example.demo.student;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 //đánh dấu một class Java là một entity , cho JPA biết đối tượng này tương ứng với một bảng trong cơ sở dữ liệu
@@ -19,7 +20,9 @@ public class student
     private Long id;
     @Column(name = "name")
     private String name;
+
     @Column(name = "age")
+    @Transient
     private int age;
     @Column(name = "dob")
     private LocalDate dob;
@@ -29,17 +32,16 @@ public class student
     public student() {
     }
 
-    public student(Long id, String name, int age, LocalDate dob, String email) {
+    public student(Long id, String name,  LocalDate dob, String email) {
         this.id = id;
         this.name = name;
-        this.age = age;
+
         this.dob = dob;
         this.email = email;
     }
 
-    public student(String name, int age, LocalDate dob, String email) {
+    public student(String name, LocalDate dob, String email) {
         this.name = name;
-        this.age = age;
         this.dob = dob;
         this.email = email;
     }
@@ -61,7 +63,7 @@ public class student
     }
 
     public int getAge() {
-        return age;
+        return Period.between(this.dob, LocalDate.now()).getYears();
     }
 
     public void setAge(int age) {
